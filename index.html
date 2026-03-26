@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Александр Ильин — CRM-маркетолог</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;700&family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:#0d1117;
+  color:#e8eaed;
+  font-family:"Manrope",sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  overflow-x:hidden;
+}
+:root{
+  --accent:#00e5b4;
+  --accent2:#00c99e;
+  --bg:#0d1117;
+  --card:#161c24;
+  --card2:#1a2230;
+  --border:#243040;
+  --gray:#8899aa;
+}
+
+/* HERO */
+.hero{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:60px 24px;
+  position:relative;
+  background: radial-gradient(ellipse at 50% 60%, rgba(0,229,180,0.07) 0%, transparent 70%), #0d1117;
+}
+.hero::before{
+  content:"";
+  position:absolute;
+  width:500px;height:500px;
+  background:radial-gradient(circle,rgba(0,229,180,0.06) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.envelope-wrap{
+  cursor:pointer;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:18px;
+  z-index:2;
+  position:relative;
+  user-select:none;
+}
+.envelope{
+  width:90px;height:90px;
+  position:relative;
+  animation:wiggle 3s ease-in-out infinite;
+}
+@keyframes wiggle{
+  0%,100%{transform:rotate(0deg)}
+  15%{transform:rotate(-7deg)}
+  30%{transform:rotate(7deg)}
+  45%{transform:rotate(-4deg)}
+  60%{transform:rotate(4deg)}
+  75%{transform:rotate(-1deg)}
+}
+.envelope svg{width:100%;height:100%}
+.badge{
+  position:absolute;
+  top:-4px;right:-4px;
+  background:var(--accent);
+  color:#0d1117;
+  font-family:"Unbounded",sans-serif;
+  font-size:11px;font-weight:700;
+  width:22px;height:22px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.hero-hint{
+  font-size:12px;
+  color:var(--gray);
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* INLINE BUBBLE PANEL */
+.bubble-panel{
+  position:fixed;
+  top:50%;
+  right:-420px;
+  transform:translateY(-50%);
+  width:360px;
+  max-width:calc(100vw - 32px);
+  background:#161c24;
+  border:1px solid var(--border);
+  border-radius:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  padding:28px;
+  z-index:200;
+  transition:right 0.45s cubic-bezier(0.34,1.3,0.64,1);
+}
+.bubble-panel.open{
+  right:20px;
+}
+.bubble-close{
+  position:absolute;
+  top:14px;right:16px;
+  background:none;border:none;
+  font-size:18px;color:#556;
+  cursor:pointer;line-height:1;
+}
+.bubble-close:hover{color:#aaa}
+
+/* letter bubble */
+.letter-bubble-header{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:18px;
+}
+.letter-photo{
+  width:56px;height:56px;
+  border-radius:50%;
+  object-fit:cover;
+  border:3px solid var(--accent);
+  flex-shrink:0;
+}
+.letter-name{
+  font-family:"Unbounded",sans-serif;
+  font-size:15px;font-weight:700;
+  line-height:1.2;
+  color:#e8eaed;
+}
+.letter-role{
+  font-size:12px;color:var(--gray);
+  margin-top:3px;
+}
+
+/* speech bubble tail */
+.speech-bubble{
+  background:#1a2230;
+  border:1px solid var(--border);
+  border-radius:18px 18px 18px 4px;
+  padding:16px 18px;
+  font-size:14px;
+  line-height:1.6;
+  color:#c8d0d8;
+  position:relative;
+  margin-bottom:10px;
+}
+.speech-bubble strong{color:#e8eaed}
+
+.bubble-scroll-hint{
+  font-size:12px;color:#445;
+  text-align:center;
+  margin-top:14px;
+}
+
+/* CTR pop — inline near envelope */
+.ctr-float{
+  position:fixed;
+  top:calc(50vh - 120px);
+  left:50%;
+  transform:translateX(-50%) translateY(0);
+  background:var(--accent);
+  color:#0d1117;
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  padding:8px 18px;
+  border-radius:30px;
+  pointer-events:none;
+  opacity:0;
+  z-index:300;
+  transition:opacity 0.3s,transform 0.4s;
+}
+.ctr-float.show{
+  opacity:1;
+  transform:translateX(-50%) translateY(-12px);
+}
+
+/* SECTIONS */
+.section{
+  max-width:780px;
+  margin:0 auto;
+  padding:70px 24px;
+}
+.section-label{
+  font-family:"Unbounded",sans-serif;
+  font-size:10px;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--accent);
+  margin-bottom:10px;
+}
+h2{
+  font-family:"Unbounded",sans-serif;
+  font-size:clamp(20px,3.5vw,28px);
+  font-weight:700;
+  line-height:1.3;
+  margin-bottom:28px;
+  color:#e8eaed;
+}
+.divider-line{
+  border:none;
+  border-top:1px solid var(--border);
+  margin:0;
+}
+
+/* WA section */
+.wa-trigger-wrap{
+  max-width:780px;
+  margin:0 auto;
+  padding:48px 24px;
+  display:flex;
+  align-items:center;
+  gap:16px;
+  cursor:pointer;
+}
+.wa-icon-btn{
+  width:72px;height:72px;
+  background:var(--accent);
+  border-radius:18px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:34px;
+  flex-shrink:0;
+  box-shadow:0 4px 20px rgba(0,229,180,0.25);
+  transition:transform 0.2s;
+  position:relative;
+  animation:wiggle 3s ease-in-out infinite;
+}
+.wa-icon-btn:hover{transform:scale(1.05)}
+.wa-badge{
+  position:absolute;
+  top:-6px;right:-6px;
+  background:#e53935;
+  color:#fff;
+  font-family:"Unbounded",sans-serif;
+  font-size:9px;font-weight:700;
+  width:20px;height:20px;
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+}
+.wa-trigger-label{
+  font-size:14px;color:var(--gray);
+}
+.wa-trigger-label strong{
+  display:block;
+  font-size:15px;color:#e8eaed;font-weight:600;
+}
+
+/* retention pop */
+.retention-pop{
+  position:absolute;
+  bottom:calc(100% + 8px);
+  left:50%;
+  transform:translateX(-50%) scale(0.8);
+  background:var(--accent);
+  color:#0d1117;
+  font-family:"Unbounded",sans-serif;
+  font-size:10px;font-weight:700;
+  padding:5px 12px;
+  border-radius:20px;
+  white-space:nowrap;
+  opacity:0;
+  pointer-events:none;
+  transition:all 0.35s cubic-bezier(0.34,1.56,0.64,1);
+}
+.retention-pop.show{
+  opacity:1;
+  transform:translateX(-50%) scale(1);
+}
+
+/* WA CHAT PANEL */
+.wa-chat-panel{
+  position:fixed;
+  top:50%;
+  left:-420px;
+  transform:translateY(-50%);
+  width:360px;
+  max-width:calc(100vw - 32px);
+  background:#1a1f2b;
+  border-radius:20px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  overflow:hidden;
+  z-index:200;
+  transition:left 0.45s cubic-bezier(0.34,1.3,0.64,1);
+  border:1px solid var(--border);
+}
+.wa-chat-panel.open{
+  left:20px;
+}
+.wa-chat-header{
+  background:#0a1520;
+  padding:14px 16px;
+  display:flex;align-items:center;gap:10px;
+  border-bottom:1px solid var(--border);
+}
+.wa-chat-avatar{
+  width:36px;height:36px;
+  background:var(--accent);
+  border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;
+  font-weight:800;
+  font-family:"Unbounded",sans-serif;
+  color:#0d1117;
+}
+.wa-chat-name{font-family:"Manrope",sans-serif;font-size:14px;font-weight:600;color:#e8eaed}
+.wa-chat-status{font-size:11px;color:var(--accent)}
+.wa-chat-close{
+  margin-left:auto;
+  background:none;border:none;
+  color:rgba(255,255,255,0.35);
+  font-size:18px;cursor:pointer;
+}
+.wa-chat-body{
+  padding:16px 12px;
+  display:flex;flex-direction:column;gap:10px;
+  min-height:280px;
+  background:#111820;
+}
+.wa-msg{
+  max-width:82%;
+  padding:10px 14px;
+  border-radius:16px;
+  font-size:13px;line-height:1.55;
+  opacity:0;transform:translateY(8px);
+  transition:opacity 0.35s,transform 0.35s;
+}
+.wa-msg.visible{opacity:1;transform:translateY(0)}
+.wa-msg.them{
+  background:#1e2a38;
+  color:#c8d0d8;
+  border-bottom-left-radius:3px;
+  align-self:flex-start;
+  border:1px solid #243040;
+}
+.wa-msg.me{
+  background:#0a3d30;
+  color:#c8fce8;
+  border-bottom-right-radius:3px;
+  align-self:flex-end;
+  border:1px solid #1a5a44;
+}
+.wa-time{font-size:10px;color:#556;margin-top:4px;text-align:right}
+
+/* CASES */
+.cases-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:16px;
+}
+@media(max-width:580px){.cases-grid{grid-template-columns:1fr}}
+.case-card{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px;
+  transition:border-color 0.25s,transform 0.25s;
+}
+.case-card:hover{
+  border-color:var(--accent);
+  transform:translateY(-2px);
+}
+.case-client{
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  color:var(--accent);margin-bottom:8px;
+}
+.case-task{
+  font-size:12px;color:var(--gray);
+  margin-bottom:14px;line-height:1.5;
+}
+.metric-row{margin-bottom:8px}
+.metric-val{
+  font-family:"Unbounded",sans-serif;
+  font-size:15px;font-weight:700;
+  color:#e8eaed;
+}
+.metric-desc{font-size:11px;color:var(--gray)}
+
+/* WHY */
+.why-list{display:flex;flex-direction:column;gap:12px}
+.why-item{
+  display:flex;gap:14px;align-items:flex-start;
+  padding:18px 20px;
+  background:var(--card);
+  border-radius:14px;
+  border:1px solid var(--border);
+}
+.why-icon{font-size:20px;flex-shrink:0;margin-top:2px}
+.why-text strong{display:block;font-weight:600;font-size:14px;margin-bottom:3px;color:#e8eaed}
+.why-text span{font-size:13px;color:var(--gray);line-height:1.5}
+
+/* EXP */
+.exp-item{
+  display:flex;gap:16px;
+  padding:20px 0;
+  border-bottom:1px solid var(--border);
+}
+.exp-item:last-child{border-bottom:none}
+.exp-logo{
+  width:42px;height:42px;
+  border-radius:10px;
+  background:#1a2230;
+  border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:9px;font-weight:700;
+  color:var(--gray);flex-shrink:0;
+  text-align:center;line-height:1.3;
+}
+.exp-company{font-weight:600;font-size:14px;margin-bottom:1px;color:#e8eaed}
+.exp-role{font-size:12px;color:var(--gray);margin-bottom:1px}
+.exp-period{font-size:11px;color:#445}
+
+/* BASKETBALL */
+.bball-section{
+  max-width:780px;margin:0 auto;
+  padding:70px 24px;
+  text-align:center;
+}
+.bball-arena{
+  position:relative;
+  width:340px;
+  height:320px;
+  margin:0 auto;
+  border-radius:18px;
+  overflow:hidden;
+  background:linear-gradient(180deg,#0a1520 0%,#0d1a2a 60%,#091220 100%);
+  border:1px solid var(--border);
+  box-shadow:0 4px 30px rgba(0,0,0,0.5);
+}
+/* court line */
+.bball-arena::after{
+  content:"";
+  position:absolute;
+  bottom:0;left:0;right:0;
+  height:60px;
+  border-top:2px solid rgba(0,229,180,0.15);
+  background:linear-gradient(transparent,rgba(0,229,180,0.04));
+  pointer-events:none;
+}
+/* hoop structure */
+.hoop-wrap{
+  position:absolute;
+  top:38px;
+  left:50%;
+  transform:translateX(-50%);
+}
+/* backboard */
+.backboard{
+  width:70px;height:44px;
+  background:#162030;
+  border:2.5px solid rgba(0,229,180,0.5);
+  border-radius:6px;
+  margin:0 auto;
+  position:relative;
+  box-shadow:0 0 12px rgba(0,229,180,0.15);
+}
+.backboard-inner{
+  position:absolute;
+  width:32px;height:20px;
+  border:2px solid rgba(0,229,180,0.35);
+  border-radius:2px;
+  bottom:6px;left:50%;transform:translateX(-50%);
+}
+/* rim */
+.rim{
+  width:54px;height:8px;
+  background:transparent;
+  border:3px solid #e05020;
+  border-radius:4px 4px 6px 6px;
+  margin:0 auto;
+  position:relative;
+  z-index:3;
+  box-shadow:0 2px 8px rgba(224,80,32,0.4);
+}
+/* net */
+.net{
+  width:54px;
+  height:28px;
+  margin:0 auto;
+  position:relative;
+  overflow:hidden;
+}
+.net::before,.net::after{
+  content:"";
+  position:absolute;
+  top:0;left:0;right:0;bottom:0;
+  background:
+    repeating-linear-gradient(90deg, transparent, transparent 6px, rgba(200,200,200,0.3) 6px, rgba(200,200,200,0.3) 7px),
+    repeating-linear-gradient(0deg, transparent, transparent 5px, rgba(200,200,200,0.3) 5px, rgba(200,200,200,0.3) 6px);
+  clip-path:polygon(8% 0%,92% 0%,76% 100%,24% 100%);
+}
+
+/* ball */
+.bball{
+  position:absolute;
+  width:42px;height:42px;
+  border-radius:50%;
+  background:radial-gradient(circle at 35% 35%, #e86020, #c04010 55%, #8a2800);
+  box-shadow:2px 2px 8px rgba(0,0,0,0.5), inset -3px -3px 8px rgba(0,0,0,0.3);
+  left:50%;
+  bottom:28px;
+  transform:translateX(-50%);
+  cursor:pointer;
+  transition:none;
+  z-index:10;
+  user-select:none;
+}
+/* ball seam lines */
+.bball::before,.bball::after{
+  content:"";
+  position:absolute;
+  border-radius:50%;
+  border:1.5px solid rgba(0,0,0,0.4);
+}
+.bball::before{
+  width:100%;height:100%;
+  top:0;left:0;
+  clip-path:polygon(0 40%, 100% 40%, 100% 55%, 0 55%);
+  transform:rotate(35deg);
+}
+.bball::after{
+  width:60%;height:100%;
+  top:0;left:20%;
+  border-left:none;border-right:none;
+}
+/* ball shadow on floor */
+.ball-shadow{
+  position:absolute;
+  bottom:18px;
+  left:50%;
+  transform:translateX(-50%);
+  width:36px;height:8px;
+  background:rgba(0,0,0,0.4);
+  border-radius:50%;
+  filter:blur(3px);
+  z-index:5;
+  transition:opacity 0.2s;
+}
+
+/* score board top right */
+.score-board{
+  position:absolute;
+  top:10px;right:12px;
+  background:rgba(0,0,0,0.5);
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:6px 10px;
+  text-align:center;
+}
+.score-board .sb-label{font-size:9px;color:var(--gray);font-family:"Unbounded",sans-serif;letter-spacing:0.1em}
+.score-board .sb-val{font-size:16px;font-weight:700;font-family:"Unbounded",sans-serif;color:var(--accent)}
+
+/* throw btn */
+.throw-btn{
+  margin-top:28px;
+  background:var(--accent);color:#0d1117;
+  border:none;border-radius:40px;
+  padding:14px 36px;
+  font-family:"Unbounded",sans-serif;
+  font-size:12px;font-weight:700;
+  cursor:pointer;letter-spacing:0.04em;
+  transition:transform 0.2s,box-shadow 0.2s;
+  text-transform:uppercase;
+}
+.throw-btn:hover{transform:scale(1.03);box-shadow:0 6px 24px rgba(0,229,180,0.3)}
+.throw-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;box-shadow:none}
+.bball-result{
+  margin-top:20px;
+  font-size:14px;
+  line-height:1.6;
+  min-height:24px;
+  opacity:0;transition:opacity 0.5s;
+  color:#e8eaed;
+}
+.bball-result.show{opacity:1}
+.bball-result a{color:var(--accent);font-weight:600;text-decoration:none}
+.bball-result a:hover{text-decoration:underline}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.55s,transform 0.55s}
+.reveal.visible{opacity:1;transform:translateY(0)}
+</style>
+</head>
+<body>
+
+<!-- CTR float -->
+<div class="ctr-float" id="ctrFloat">📈 CTR</div>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="envelope-wrap" onclick="openLetter()">
+    <div class="envelope">
+      <div class="badge">1</div>
+      <svg viewBox="0 0 90 90" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect width="90" height="90" rx="18" fill="#161c24" stroke="#243040" stroke-width="1.5"/>
+        <rect x="12" y="26" width="66" height="42" rx="6" fill="#1a2230" stroke="#243040" stroke-width="1"/>
+        <path d="M12 32L45 54L78 32" stroke="#00e5b4" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="hero-hint">Вам письмо!</div>
+  </div>
+</div>
+
+<!-- LETTER BUBBLE PANEL (slides in from right) -->
+<div class="bubble-panel" id="letterPanel">
+  <button class="bubble-close" onclick="closeLetter()">✕</button>
+  <div class="letter-bubble-header">
+    <img class="letter-photo" src="photo.jpg" alt="Александр">
+    <div>
+      <div class="letter-name">Александр Ильин</div>
+      <div class="letter-role">Начинающий CRM-маркетолог</div>
+    </div>
+  </div>
+  <div class="speech-bubble">
+    Салют!<br><br> 
+    Мой кейс не совсем стандартный: мне уже 33 и у меня более 7 лет опыта в digital.<br><br>
+    Я осознанно иду на позицию джуна в CRM-маркетинге.<br><br>
+    <strong>Ниже объясню почему. ↓</strong>
+  </div>
+  <div class="bubble-scroll-hint">листай вниз, панель не мешает</div>
+</div>
+
+<!-- WA CHAT PANEL (slides in from left) -->
+<div class="wa-chat-panel" id="waChatPanel">
+  <div class="wa-chat-header">
+    <div class="wa-chat-avatar">P</div>
+    <div>
+      <div class="wa-chat-name">PARI</div>
+      <div class="wa-chat-status">онлайн</div>
+    </div>
+    <button class="wa-chat-close" onclick="closeWaChat()">✕</button>
+  </div>
+  <div class="wa-chat-body">
+    <div class="wa-msg them" id="wm1">
+      Александр, кем вы работали ранее и почему решили сменить направление?
+      <div class="wa-time">10:04</div>
+    </div>
+    <div class="wa-msg me" id="wm2">
+      Я более 7 лет работал в SEO. Но сейчас хочу сменить направление карьеры. Основаная причина - перестал чувствовать, что приношу пользу клиентам. Во времена когда сверху идет блок из 5-8 рекламных мест, когда "быстрые ответы" от ИИ съедают трафик, а все топовые места забирают маркетплейсы и агрегаторы, польза сеошника, к сожалению, не высока
+      <div class="wa-time">10:40 ✓✓</div>
+    </div>
+    <div class="wa-msg them" id="wm3">
+      Понятно. А почему именно CRM?
+      <div class="wa-time">10:40</div>
+    </div>
+    <div class="wa-msg me" id="wm4">
+      Во-первых, мне кажется, что я неплохо умею анализировать и прогнозировать поведение пользователей, во-вторых, на этой позиции я буду чувствовать свою пользу, и в-третьих, во времена когда привлечение клиентов становится таким дорогим, ценность удержания клиентов возрастает - востребованность CRM-специалистов будет только расти
+      <div class="wa-time">10:41 ✓✓</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WA TRIGGER -->
+<div class="wa-trigger-wrap reveal" onclick="openWaChat()">
+  <div class="wa-icon-btn" id="waIconBtn">
+    <span style="font-size:28px;">💬</span>
+    <div class="wa-badge" id="waBadge">1</div>
+    <div class="retention-pop" id="retentionPop">Retention 100%!</div>
+  </div>
+  <div class="wa-trigger-label">
+    <strong>Вам снова письмо!</strong>
+    Нажми, чтобы увидеть переписку
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- CASES -->
+<div class="section reveal">
+  <div class="section-label">Немного кейсов</div>
+  <h2>Примеры, где аналитика дала результат</h2>
+  <div class="cases-grid">
+    <div class="case-card">
+      <div class="case-client">1ЦУПИС</div>
+      <div class="case-task">UX-аудит на основе Custdev и аналитики. Разобрался почему пользователи не конвертируются — переработал коммуникацию.</div>
+      <div class="metric-row">
+        <div class="metric-val">2% → 5,2%</div>
+        <div class="metric-desc">CR в заявку — вырос в 2,6 раза</div>
+      </div>
+    </div>
+    <div class="case-card">
+     <div class="case-client">VEKA</div>
+      <div class="case-task">Метрика показала: высокий отказ, низкое время на странице. Пересобрал структуру раздела "Справочник", добавил экспертные блоки и CTA.</div>
+      <div class="metric-row">
+        <div class="metric-val">0:36 → 1:32</div>
+        <div class="metric-desc">Время на сайте выросло вдвое</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-val">72% → 46%</div>
+        <div class="metric-desc">Отказы упали</div>
+      </div>
+      <div class="metric-row">
+        <div class="metric-val">ТОП-10</div>
+        <div class="metric-desc">Большинство статей раздела</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- WHY ME -->
+<div class="section reveal">
+  <div class="section-label">Навыки</div>
+  <h2>Что умею и чем могу помочь</h2>
+  <div class="why-list">
+    <div class="why-item">
+      <div class="why-icon">📊</div>
+      <div class="why-text">
+        <strong>Аналитика</strong>
+        <span>Работал с Яндекс Метрикой и Google Analytics, делал UX-аудиты и конкурентные анализы.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🧠</div>
+      <div class="why-text">
+        <strong>Понимаю поведение пользователей</strong>
+        <span>Так как я много работал с сайтами и приложениями, то понимаю основные паттерны поведения юзеров.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">✍️</div>
+      <div class="why-text">
+        <strong>Менеджмент</strong>
+        <span>Контент-планы, ТЗ копирайтерам и дизайнерам, согласование, проверка. Понимаю весь цикл от идеи до публикации.</span>
+      </div>
+    </div>
+    <div class="why-item">
+      <div class="why-icon">🚀</div>
+      <div class="why-text">
+        <strong>Учусь быстро и не боюсь признавать пробелы</strong>
+        <span>Да, в CRM я начинающий. Но у меня есть база, мотивация и понимание зачем всё это — а не просто "хочу попробовать что-то новое".</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- EXP -->
+<div class="section reveal">
+  <div class="section-label">Опыт</div>
+  <h2>Где работал</h2>
+  <div class="exp-item">
+    <div class="exp-logo">MOL<br>INO<br>S</div>
+    <div>
+      <div class="exp-company">Molinos - агентство интернет-маркетинга </div>
+      <div class="exp-role">SEO-специалист · UX-аудиты · аналитика</div>
+      <div class="exp-period">5 лет</div>
+    </div>
+  </div>
+  <div class="exp-item">
+    <div class="exp-logo">PIK<br>PRO</div>
+    <div>
+      <div class="exp-company">PIK.PRO - сервис для строителей (дочка ПИК)</div>
+      <div class="exp-role">ORM-специалист · управление репутацией, PR</div>
+      <div class="exp-period">1 год</div>
+    </div>
+  </div>
+  <div class="exp-item">
+    <div class="exp-logo">ORI<br>ON</div>
+    <div>
+      <div class="exp-company">Orion Solutions - информационная безопасность</div>
+      <div class="exp-role">SEO-специалист · работа с контентом · аналитика</div>
+      <div class="exp-period">2 года</div>
+    </div>
+  </div>
+</div>
+
+<hr class="divider-line">
+
+<!-- BASKETBALL -->
+<div class="bball-section reveal">
+  <div class="section-label">Финал</div>
+  <h2>Брось мяч</h2>
+
+  <div class="bball-arena" id="bballArena">
+    <!-- scoreboard -->
+    <div class="score-board">
+      <div class="sb-label">SCORE</div>
+      <div class="sb-val" id="scoreVal">0</div>
+    </div>
+
+    <!-- hoop -->
+    <div class="hoop-wrap" id="hoopWrap">
+      <div class="backboard">
+        <div class="backboard-inner"></div>
+      </div>
+      <div class="rim" id="rim"></div>
+      <div class="net"></div>
+    </div>
+
+    <!-- ball shadow -->
+    <div class="ball-shadow" id="ballShadow"></div>
+
+    <!-- ball -->
+    <div class="bball" id="bball"></div>
+  </div>
+
+  <button class="throw-btn" id="throwBtn" onclick="throwBall()">Бросить</button>
+  <div class="bball-result" id="bballResult"></div>
+</div>
+
+<script>
+// LETTER
+function openLetter(){
+  document.getElementById("letterPanel").classList.add("open");
+  setTimeout(()=>{
+    const p=document.getElementById("ctrFloat");
+    p.classList.add("show");
+    setTimeout(()=>p.classList.remove("show"),2200);
+  },500);
+}
+function closeLetter(){
+  document.getElementById("letterPanel").classList.remove("open");
+}
+
+// WA CHAT
+let waChatAnimated=false;
+function openWaChat(){
+  const pop=document.getElementById("retentionPop");
+  pop.classList.add("show");
+  setTimeout(()=>{
+    pop.classList.remove("show");
+    document.getElementById("waChatPanel").classList.add("open");
+    if(!waChatAnimated){
+      waChatAnimated=true;
+      ["wm1","wm2","wm3","wm4"].forEach((id,i)=>{
+        setTimeout(()=>{
+          const el=document.getElementById(id);
+          if(el) el.classList.add("visible");
+        },i*600);
+      });
+    }
+  },900);
+}
+function closeWaChat(){
+  document.getElementById("waChatPanel").classList.remove("open");
+}
+
+// SCROLL REVEAL
+const observer=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting) e.target.classList.add("visible")});
+},{threshold:0.12});
+document.querySelectorAll(".reveal").forEach(el=>observer.observe(el));
+
+// BASKETBALL
+let shooting=false;
+let score=0;
+let hasScored=false;
+
+function throwBall(){
+  if(shooting)return;
+  shooting=true;
+  document.getElementById("throwBtn").disabled=true;
+  document.getElementById("bballResult").classList.remove("show");
+
+  const ball=document.getElementById("bball");
+  const shadow=document.getElementById("ballShadow");
+  const arena=document.getElementById("bballArena");
+  const arenaH=arena.offsetHeight;
+  const arenaW=arena.offsetWidth;
+
+  // reset ball position
+  ball.style.transition="none";
+  ball.style.left="50%";
+  ball.style.bottom="28px";
+  ball.style.transform="translateX(-50%)";
+  ball.style.opacity="1";
+  shadow.style.opacity="1";
+
+  // hoop center X ~50%, Y from top ~115px (backboard 38+44 = 82, rim starts ~82px from top)
+  const hoopTopFromBottom = arenaH - 115;
+  const hoopLeft = arenaW/2;
+
+  // Arc animation using JS requestAnimationFrame
+  const startX = arenaW/2;
+  const startY = arenaH - 28 - 21; // bottom 28 + half ball 21
+  const endX = hoopLeft;
+  const endY = 115;
+
+  // Control point for arc (goes up and to the hoop)
+  const cpX = arenaW * 0.38;
+  const cpY = 30;
+
+  const dur = 900;
+  const startT = performance.now();
+
+  // remove css positioning
+  ball.style.left="0";
+  ball.style.bottom="auto";
+  ball.style.top="0";
+  ball.style.transform="none";
+
+  function ease(t){return t<0.5?2*t*t:1-Math.pow(-2*t+2,2)/2}
+
+  function frame(now){
+    let t=Math.min((now-startT)/dur,1);
+    let et=ease(t);
+    // quadratic bezier
+    const bx=(1-et)*(1-et)*startX+2*(1-et)*et*cpX+et*et*endX;
+    const by=(1-et)*(1-et)*startY+2*(1-et)*et*cpY+et*et*endY;
+
+    const ballSize=42;
+    ball.style.left=(bx - ballSize/2)+"px";
+    ball.style.top=(by - ballSize/2)+"px";
+
+    // rotate ball
+    ball.style.transform="rotate("+(-t*720)+"deg)";
+
+    // shadow shrinks as ball rises
+    const shadowScale=0.3+0.7*(by/startY);
+    shadow.style.opacity=String(Math.max(0,shadowScale*0.6));
+    shadow.style.transform=`translateX(-50%) scaleX(${shadowScale})`;
+
+    if(t<1){requestAnimationFrame(frame)}
+    else{
+      // Ball goes through hoop - drop through net
+      dropThroughNet(bx,by);
+    }
+  }
+  requestAnimationFrame(frame);
+}
+
+function dropThroughNet(startX,startY){
+  const ball=document.getElementById("bball");
+  const shadow=document.getElementById("ballShadow");
+  const arena=document.getElementById("bballArena");
+  const arenaH=arena.offsetHeight;
+
+  // flash rim
+  const rim=document.getElementById("rim");
+  rim.style.boxShadow="0 2px 20px rgba(0,229,180,0.8)";
+  setTimeout(()=>{rim.style.boxShadow="0 2px 8px rgba(224,80,32,0.4)"},300);
+
+  // short pause then drop
+  const dur=400;
+  const startT=performance.now();
+  const endY=arenaH+10;
+
+  function frame(now){
+    let t=Math.min((now-startT)/dur,1);
+    const curY=startY + (endY-startY)*t*t;
+    ball.style.top=(curY-21)+"px";
+    ball.style.opacity=String(1-t*0.7);
+
+    if(t<1){requestAnimationFrame(frame)}
+    else{
+      // done
+      score++;
+      document.getElementById("scoreVal").textContent=score;
+      shooting=false;
+      document.getElementById("throwBtn").disabled=false;
+      document.getElementById("throwBtn").textContent="Бросить ещё";
+
+      // reset ball
+      setTimeout(()=>{
+        ball.style.transition="none";
+        ball.style.left="50%";
+        ball.style.top="auto";
+        ball.style.bottom="28px";
+        ball.style.transform="translateX(-50%)";
+        ball.style.opacity="1";
+        shadow.style.opacity="1";
+        shadow.style.transform="translateX(-50%) scaleX(1)";
+      },100);
+
+      if(!hasScored){
+        hasScored=true;
+        const r=document.getElementById("bballResult");
+        r.innerHTML='Ура! Поздравляем, вы выиграли контакты этого кандидата 🎉<br><a href="https://t.me/alexilinw" target="_blank">TG @alexilinw</a>';
+        r.classList.add("show");
+      }
+    }
+  }
+  requestAnimationFrame(frame);
+}
+</script>
+</body>
+</html>
